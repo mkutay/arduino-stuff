@@ -1,0 +1,28 @@
+#include <Servo.h>
+Servo yumusak_g;
+void setup() {
+  pinMode(A0, INPUT); // smoke
+  pinMode(A1, INPUT); // flame
+  Serial.begin(9600);
+  yumusak_g.attach(6);
+  yumusak_g.write(0);
+}
+int back = 0;
+
+void loop() {
+  int smoke_val = analogRead(A0);
+  int flame_val = analogRead(A1);
+  Serial.print(smoke_val);
+  Serial.print(" ");
+  Serial.println(flame_val);
+  if (smoke_val > 250 && flame_val < 500) {
+    yumusak_g.write(180);
+    delay(2500);
+    back = 1;
+  } else if (back == 1) {
+    yumusak_g.write(0);
+    delay(2500);
+    back = 0;
+  }
+  delay(500);
+}
